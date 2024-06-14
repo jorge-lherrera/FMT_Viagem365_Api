@@ -6,7 +6,25 @@ class PlaceController {
     const place = await Place.findAll();
     res.json(place);
   }
+  async listOne(req, res) {
+    try {
+      const { id } = req.params;
 
+      const place = await Place.findByPk(id);
+
+      if (!place) {
+        return res.status(404).json({ message: "Local não encontrado!" });
+      }
+
+      res.json(place);
+    } catch (error) {
+      console.log(error.message);
+      res.status(500).json({
+        error: "Não foi possível listar o local especificado",
+        error: error,
+      });
+    }
+  }
   async register(req, res) {
     try {
       const {

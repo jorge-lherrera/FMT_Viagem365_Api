@@ -1,5 +1,5 @@
 const yup = require("yup");
-const { Op } = require("sequelize");
+// const { Op } = require("sequelize");
 const User = require("../models/User");
 const Place = require("../models/Place");
 
@@ -64,7 +64,8 @@ class UserController {
 
       const existingUser = await User.findOne({
         where: {
-          [Op.or]: [{ cpf: cpf }, { email: email }],
+          cpf,
+          email,
         },
       });
 
@@ -120,14 +121,24 @@ class UserController {
   async deleteOne(req, res) {
     try {
       const { id } = req.params;
-      const deletedUser = await User.destroy({
-        where: {
-          id: id,
-        },
+      const user = await User.findByPk(id);
+      const places = await Place.findAll({
+        where: { user_id: id },
       });
 
-      if (!deletedUser) {
-        return res.status(404).json({ message: "O usuario não existe" });
+      if (!user) {
+        return res.status(404).json({ message: "Usuário não encontrado!" });
+      }
+      if (places.length > 0) {
+        return res.status(403).json({
+          message: "Usuário não se pode eliminar, tem locales asociados!",
+        });
+      } else {
+        await User.destroy({
+          where: {
+            id,
+          },
+        });
       }
 
       res.status(200).json({ message: "Usuario eliminado com sucesso" });
