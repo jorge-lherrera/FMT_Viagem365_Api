@@ -1,12 +1,13 @@
 const Place = require("../models/Place");
 const User = require("../models/User");
+const LoginController = require("./LoginController");
 
 class PlaceController {
-  async list(req, res) {
+  async findAll(req, res) {
     const place = await Place.findAll();
     res.json(place);
   }
-  async listOne(req, res) {
+  async findOne(req, res) {
     try {
       const { id } = req.params;
 
@@ -25,7 +26,7 @@ class PlaceController {
       });
     }
   }
-  async register(req, res) {
+  async create(req, res) {
     try {
       const {
         user_id,

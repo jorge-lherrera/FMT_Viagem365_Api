@@ -4,9 +4,9 @@ const PlaceController = require("../controllers/PlaceController");
 
 const placeRoutes = new Router();
 
-placeRoutes.get("/place", PlaceController.list);
-placeRoutes.get("/place/:id", PlaceController.listOne);
-placeRoutes.post("/place", auth, PlaceController.register);
+placeRoutes.get("/place", PlaceController.findAll);
+placeRoutes.get("/place/:id", PlaceController.findOne);
+placeRoutes.post("/place", auth, PlaceController.create);
 placeRoutes.put("/place/:id", auth, PlaceController.updateOne);
 placeRoutes.delete("/place/:id", auth, PlaceController.deleteOne);
 

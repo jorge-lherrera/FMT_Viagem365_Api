@@ -4,10 +4,10 @@ const UserController = require("../controllers/UserController");
 
 const userRoutes = new Router();
 
-userRoutes.get("/", UserController.list);
-userRoutes.get("/:id", auth, UserController.listOne);
-userRoutes.get("/:id/places", auth, UserController.listPlaces);
-userRoutes.post("/", UserController.register);
+userRoutes.get("/", UserController.findAll);
+userRoutes.get("/:id", auth, UserController.findOne);
+userRoutes.get("/:id/local", auth, UserController.findPlaces);
+userRoutes.post("/usuario", UserController.create);
 userRoutes.put("/:id", auth, UserController.updateOne);
 userRoutes.delete("/:id", auth, UserController.deleteOne);
 

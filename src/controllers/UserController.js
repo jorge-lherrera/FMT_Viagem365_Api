@@ -1,5 +1,4 @@
 const yup = require("yup");
-// const { Op } = require("sequelize");
 const User = require("../models/User");
 const Place = require("../models/Place");
 
@@ -8,20 +7,19 @@ const userSchema = yup.object().shape({
   sex: yup.string().required("O sexo é obrigatório"),
   cpf: yup.string().required("O cpf é obrigatório"),
   address: yup.string().required("O endereço é obrigatório"),
-  email: yup.string().required("O email é obrigatório"),
+  email: yup.string().email().required("O email é obrigatório"),
   password: yup.string().required("A senha é obrigatório"),
-  //   birthDate: yup.string().required("A data de nascimento é obrigatória"),
+  birthDate: yup.string().required("A data de nascimento é obrigatória"),
 });
 
 class UserController {
-  async list(req, res) {
+  async findAll(req, res) {
     const users = await User.findAll();
     res.json(users);
   }
-  async listOne(req, res) {
+  async findOne(req, res) {
     try {
       const { id } = req.params;
-
       const user = await User.findByPk(id);
 
       if (!user) {
@@ -38,7 +36,7 @@ class UserController {
     }
   }
 
-  async listPlaces(req, res) {
+  async findPlaces(req, res) {
     try {
       const { id } = req.params;
       const place = await Place.findAll({
@@ -54,7 +52,7 @@ class UserController {
     }
   }
 
-  async register(req, res) {
+  async create(req, res) {
     try {
       await userSchema.validate(req.body, {
         abortEarly: false,
